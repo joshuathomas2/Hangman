@@ -7,6 +7,7 @@ class Hangman:
         self.user_input = ""
         self.secret_word = ""
         self.word_file = ""
+        self.hangman_file = ""
         self.word_progress = []
         self.lives = 0
         self.words = []
@@ -18,7 +19,7 @@ class Hangman:
     def start(self):
         self.in_game = True
         self.lives = 10
-        self.word_file = open("words.txt", "r")
+        self.word_file = open("text_files/words.txt", "r")
         self.words = self.word_file.readlines()
         self.secret_word = random.choice(self.words)[:-1]
         self.word_file.close()
@@ -42,10 +43,18 @@ class Hangman:
                 self.used_letters.append(self.user_input)
 
                 if self.user_input in self.secret_word:
-                    pass
+                    print("That letter was in the secret word!")
+                    self.hangman_file = open(f"text_files/hangman_{self.lives}.txt", "r")
+                    for line in self.hangman_file:
+                        print(line)
+                    self.hangman_file.close()
                 else:
                     self.lives -= 1
                     print("That letter was not in the secret word. You lost a life!")
+                    self.hangman_file = open(f"text_files/hangman_{self.lives}.txt", "r")
+                    for line in self.hangman_file:
+                        print(line)
+                    self.hangman_file.close()
 
                 for x in range(len(self.secret_word)):
                     if self.user_input == self.secret_word[x]:
