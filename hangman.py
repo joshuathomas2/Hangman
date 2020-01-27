@@ -28,13 +28,9 @@ class Hangman:
             self.word_progress.append("_")
 
         while self.in_game:
-            print("========================================")
-            print(f"Available letters: {self.available_letters}")
-            print(f"Used letters: {self.used_letters}")
-            print(f"Secret word: {self.secret_word}")
-            print(f"Progress: {self.word_progress}")
-            print(f"You have {self.lives} lives remaining.")
-            print("========================================")
+
+            self.print_stats()
+
             self.user_input = input("What letter would you like to guess? ")
 
             if self.user_input.isalpha() and len(self.user_input) == 1 and self.user_input in self.available_letters:
@@ -44,17 +40,11 @@ class Hangman:
 
                 if self.user_input in self.secret_word:
                     print("That letter was in the secret word!")
-                    self.hangman_file = open(f"text_files/hangman_{self.lives}.txt", "r")
-                    for line in self.hangman_file:
-                        print(line)
-                    self.hangman_file.close()
+                    self.print_hangman()
                 else:
                     self.lives -= 1
                     print("That letter was not in the secret word. You lost a life!")
-                    self.hangman_file = open(f"text_files/hangman_{self.lives}.txt", "r")
-                    for line in self.hangman_file:
-                        print(line)
-                    self.hangman_file.close()
+                    self.print_hangman()
 
                 for x in range(len(self.secret_word)):
                     if self.user_input == self.secret_word[x]:
@@ -67,19 +57,12 @@ class Hangman:
 
             if self.complete_word:
                 print(f"You guessed the word! The word was {self.secret_word}. You win!")
-                self.user_input = input("Would you like to play again? (Y/N) ").upper()
-                if self.user_input == "N" or self.user_input == "NO":
-                    self.in_game = False
-                else:
-                    self.restart()
+                self.play_again()
 
             if self.lives == 0:
+                print("You ran out of lives!")
                 print(f"The secret word was {self.secret_word}")
-                self.user_input = input("You ran out of lives! Would you like to play again? (Y/N) ").upper()
-                if self.user_input == "N" or self.user_input == "NO":
-                    self.in_game = False
-                else:
-                    self.restart()
+                self.play_again()
 
     def restart(self):
         self.user_input = ""
@@ -93,6 +76,28 @@ class Hangman:
         self.in_game = False
         self.complete_word = False
         self.start()
+
+    def play_again(self):
+        self.user_input = input("Would you like to play again? (Y/N) ").upper()
+        if self.user_input == "N" or self.user_input == "NO":
+            self.in_game = False
+        else:
+            self.restart()
+
+    def print_hangman(self):
+        self.hangman_file = open(f"text_files/hangman_{self.lives}.txt", "r")
+        for line in self.hangman_file:
+            print(line)
+        self.hangman_file.close()
+
+    def print_stats(self):
+        print("========================================")
+        print(f"Available letters: {self.available_letters}")
+        print(f"Used letters: {self.used_letters}")
+        print(f"Secret word: {self.secret_word}")
+        print(f"Progress: {self.word_progress}")
+        print(f"You have {self.lives} lives remaining.")
+        print("========================================")
 
 
 def main():
