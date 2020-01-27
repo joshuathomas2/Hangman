@@ -31,7 +31,7 @@ class Hangman:
             print(f"Available letters: {self.available_letters}")
             print(f"Used letters: {self.used_letters}")
             print(f"Secret word: {self.secret_word}")
-            print(f"Progress: {self.get_word_progress()}")
+            print(f"Progress: {self.word_progress}")
             print(f"You have {self.lives} lives remaining.")
             print("========================================")
             self.user_input = input("What letter would you like to guess? ")
@@ -45,6 +45,7 @@ class Hangman:
                     pass
                 else:
                     self.lives -= 1
+                    print("That letter was not in the secret word. You lost a life!")
 
                 for x in range(len(self.secret_word)):
                     if self.user_input == self.secret_word[x]:
@@ -83,9 +84,6 @@ class Hangman:
         self.in_game = False
         self.complete_word = False
         self.start()
-
-    def get_word_progress(self):
-        return self.word_progress
 
 
 def main():
